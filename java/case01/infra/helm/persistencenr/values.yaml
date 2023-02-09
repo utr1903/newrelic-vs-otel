@@ -1,0 +1,53 @@
+### Variables
+
+# Name
+name: persistencenr
+
+# Port
+port: 8080
+
+# Replicas
+replicas: 1
+
+# Resources
+resources:
+  # Requests
+  requests:
+    # CPU
+    cpu: 100m
+    # Memory
+    memory: 100Mi
+  # Limits
+  limits:
+    # CPU
+    cpu: 800m
+    # Memory
+    memory: 1000Mi
+
+# Kafka
+kafka:
+  # Address
+  address: "kafka.common.svc.cluster.local:9092"
+  # Topic
+  topic: "newrelic"
+  # Consumer group ID
+  groupId: "persistence"
+
+# New Relic
+newrelic:
+  # Application name
+  appName: persistencenr
+  # License key
+  licenseKey: ""
+
+# MySQL
+mysql:
+  server: ""
+  # Username
+  username: "root"
+  # Password
+  password: ""
+  # Port
+  port: 3306
+  # Database
+  database: ""

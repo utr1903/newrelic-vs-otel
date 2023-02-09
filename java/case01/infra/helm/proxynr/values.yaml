@@ -1,0 +1,44 @@
+### Variables
+
+# Name
+name: proxynr
+
+# Port
+port: 8080
+
+# Replicas
+replicas: 1
+
+# Resources
+resources:
+  # Requests
+  requests:
+    # CPU
+    cpu: 100m
+    # Memory
+    memory: 100Mi
+  # Limits
+  limits:
+    # CPU
+    cpu: 800m
+    # Memory
+    memory: 1000Mi
+
+# Kafka
+kafka:
+  # Address
+  address: "kafka-0.kafka-headless.common.svc.cluster.local:9092"
+  # Topic
+  topic: "newrelic"
+
+# New Relic
+newrelic:
+  # Application name
+  appName: proxynr
+  # License key
+  licenseKey: ""
+
+# Endpoints
+endpoints:
+  # Persistence service
+  persistence: "http://persistencenr.common.svc.cluster.local:8080/persistence"
