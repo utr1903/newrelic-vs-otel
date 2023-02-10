@@ -57,8 +57,7 @@ mysql["database"]="nrvsotel"
 # proxynr
 declare -A proxynr
 proxynr["name"]="proxynr"
-proxynr["platform"]="amd64"
-proxynr["imageName"]="${repoName}:${proxynr[name]}-${proxynr[platform]}"
+proxynr["imageName"]="${repoName}:${proxynr[name]}-${platform}"
 proxynr["namespace"]="newrelic"
 proxynr["replicas"]=1
 proxynr["port"]=8080
@@ -66,8 +65,7 @@ proxynr["port"]=8080
 # persistencenr
 declare -A persistencenr
 persistencenr["name"]="persistencenr"
-persistencenr["platform"]="amd64"
-persistencenr["imageName"]="${repoName}:${persistencenr[name]}-${persistencenr[platform]}"
+persistencenr["imageName"]="${repoName}:${persistencenr[name]}-${platform}"
 persistencenr["namespace"]="newrelic"
 persistencenr["replicas"]=1
 persistencenr["port"]=8080
@@ -79,14 +77,14 @@ persistencenr["port"]=8080
 if [[ $build == "true" ]]; then
   # proxynr
   docker build \
-    --platform "linux/${proxynr[platform]}" \
+    --platform "linux/${platform}" \
     --tag "${DOCKERHUB_NAME}/${proxynr[imageName]}" \
     "../../apps/proxynr/."
   docker push "${DOCKERHUB_NAME}/${proxynr[imageName]}"
 
   # persistencenr
   docker build \
-    --platform "linux/${persistencenr[platform]}" \
+    --platform "linux/${platform}" \
     --tag "${DOCKERHUB_NAME}/${persistencenr[imageName]}" \
     "../../apps/persistencenr/."
   docker push "${DOCKERHUB_NAME}/${persistencenr[imageName]}"
