@@ -38,6 +38,11 @@ fi
 repoName="nr-vs-otel"
 clusterName="nr-vs-otel"
 
+# prometheus
+declare -A prometheus
+prometheus["name"]="prometheus"
+prometheus["namespace"]="monitoring"
+
 # kafka
 declare -A kafka
 kafka["name"]="kafka"
@@ -95,8 +100,26 @@ fi
 ###################
 
 # Add helm repos
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
+
+# prometheus
+helm upgrade ${prometheus[name]} \
+  --install \
+  --wait \
+  --debug \
+  --create-namespace \
+  --namespace ${prometheus[namespace]} \
+  --set alertmanager.enabled=false \
+  --set prometheus-pushgateway.enabled=false \
+  --set kubeStateMetrics.enabled=true \
+  --set nodeExporter.enabled=true \
+  --set nodeExporter.tolerations[0].effect="NoSchedule" \
+  --set nodeExporter.tolerations[0].operator="Exists" \
+  --set server.remoteWrite[0].url="https://metric-api.eu.newrelic.com/prometheus/v1/write?prometheus_server=${clusterName}" \
+  --set server.remoteWrite[0].bearer_token=$NEWRELIC_LICENSE_KEY \
+  "prometheus-community/prometheus"
 
 # kafka
 helm upgrade ${kafka[name]} \
