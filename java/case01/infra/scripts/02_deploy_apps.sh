@@ -53,13 +53,6 @@ declare -A prometheus
 prometheus["name"]="prometheus"
 prometheus["namespace"]="monitoring"
 
-# otel-collector
-declare -A otelcollector
-otelcollector["name"]="otel-collector"
-otelcollector["namespace"]="monitoring"
-otelcollector["mode"]="deployment"
-otelcollector["prometheusPort"]=9464
-
 # kafka
 declare -A kafka
 kafka["name"]="kafka"
@@ -91,6 +84,13 @@ proxynr["imageName"]="${repoName}:${proxynr[name]}-${platform}"
 proxynr["namespace"]="newrelic"
 proxynr["replicas"]=1
 proxynr["port"]=8080
+
+# otelcollector
+declare -A otelcollector
+otelcollector["name"]="otel-collector"
+otelcollector["namespace"]="otel"
+otelcollector["mode"]="deployment"
+otelcollector["prometheusPort"]=9464
 
 # persistenceotel
 declare -A persistenceotel
@@ -190,20 +190,6 @@ helm upgrade ${prometheus[name]} \
   --set server.remoteWrite[0].bearer_token=$NEWRELIC_LICENSE_KEY \
   "prometheus-community/prometheus"
 
-# otelcollector
-helm upgrade ${otelcollector[name]} \
-  --install \
-  --wait \
-  --debug \
-  --create-namespace \
-  --namespace ${otelcollector[namespace]} \
-  --set name=${otelcollector[name]} \
-  --set mode=${otelcollector[mode]} \
-  --set prometheus.port=${otelcollector[prometheusPort]} \
-  --set newrelicOtlpEndpoint="otlp.eu01.nr-data.net:4317" \
-  --set newrelicLicenseKey=$NEWRELIC_LICENSE_KEY \
-  "../helm/otelcollector"
-
 # kafka
 helm upgrade ${kafka[name]} \
   --install \
@@ -268,6 +254,20 @@ helm upgrade ${proxynr[name]} \
   --set newrelic.licenseKey=$NEWRELIC_LICENSE_KEY \
   --set endpoints.persistence="http://${persistencenr[name]}.${persistencenr[namespace]}.svc.cluster.local:${persistencenr[port]}/persistence" \
   "../helm/proxynr"
+
+# otelcollector
+helm upgrade ${otelcollector[name]} \
+  --install \
+  --wait \
+  --debug \
+  --create-namespace \
+  --namespace ${otelcollector[namespace]} \
+  --set name=${otelcollector[name]} \
+  --set mode=${otelcollector[mode]} \
+  --set prometheus.port=${otelcollector[prometheusPort]} \
+  --set newrelicOtlpEndpoint="otlp.eu01.nr-data.net:4317" \
+  --set newrelicLicenseKey=$NEWRELIC_LICENSE_KEY \
+  "../helm/otelcollector"
 
 # persistenceotel
 helm upgrade ${persistenceotel[name]} \
