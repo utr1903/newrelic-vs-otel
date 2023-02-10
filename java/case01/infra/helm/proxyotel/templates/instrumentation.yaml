@@ -1,0 +1,16 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  exporter:
+    endpoint: {{ .Values.endpoints.otelcollector }}
+  propagators:
+    - tracecontext
+    - baggage
+    - b3
+  sampler:
+    type: always_on
+  java:
+        

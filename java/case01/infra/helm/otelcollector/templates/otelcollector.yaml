@@ -1,0 +1,60 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: {{ .Values.name }}
+spec:
+
+  # Mode
+  mode: {{ .Values.mode }}
+
+  # Pod annotations
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "{{ .Values.prometheus.port }}"
+
+  # Ports to expose per service
+  ports:
+    - name: prometheus
+      protocol: TCP
+      port: {{ .Values.prometheus.port }}
+      targetPort: {{ .Values.prometheus.port }}
+
+  # Otel configuration
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+
+    processors:
+      batch:
+
+      spanmetrics:
+        metrics_exporter: prometheus
+
+    exporters:
+      logging:
+        loglevel: debug
+      otlp:
+        endpoint: {{ .Values.newrelicOtlpEndpoint }}
+        tls:
+          insecure: false
+        headers:
+          api-key: {{ .Values.newrelicLicenseKey }}
+      prometheus:
+        endpoint: "0.0.0.0:{{ .Values.prometheus.port }}"
+        resource_to_telemetry_conversion:
+          enabled: true
+        enable_open_metrics: true
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch, spanmetrics]
+          exporters: [logging, otlp]
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [logging, otlp, prometheus]

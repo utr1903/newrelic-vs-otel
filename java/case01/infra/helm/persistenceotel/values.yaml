@@ -1,0 +1,52 @@
+### Variables
+
+# Name
+name: persistenceotel
+
+# Port
+port: 8080
+
+# Replicas
+replicas: 1
+
+# Resources
+resources:
+  # Requests
+  requests:
+    # CPU
+    cpu: 100m
+    # Memory
+    memory: 100Mi
+  # Limits
+  limits:
+    # CPU
+    cpu: 800m
+    # Memory
+    memory: 1000Mi
+
+# Kafka
+kafka:
+  # Address
+  address: "kafka.common.svc.cluster.local:9092"
+  # Topic
+  topic: "otel"
+  # Consumer group ID
+  groupId: "persistence"
+
+# Endpoints
+endpoints:
+  # OTel collector
+  otelcollector: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+
+# MySQL
+mysql:
+  # Server path
+  server: ""
+  # Username
+  username: "root"
+  # Password
+  password: ""
+  # Port
+  port: 3306
+  # Database
+  database: ""

@@ -53,6 +53,13 @@ declare -A prometheus
 prometheus["name"]="prometheus"
 prometheus["namespace"]="monitoring"
 
+# otel-collector
+declare -A otelcollector
+otelcollector["name"]="otel-collector"
+otelcollector["namespace"]="monitoring"
+otelcollector["mode"]="deployment"
+otelcollector["prometheusPort"]=9464
+
 # kafka
 declare -A kafka
 kafka["name"]="kafka"
@@ -69,14 +76,6 @@ mysql["password"]="verysecretpassword"
 mysql["port"]=3306
 mysql["database"]="nrvsotel"
 
-# proxynr
-declare -A proxynr
-proxynr["name"]="proxynr"
-proxynr["imageName"]="${repoName}:${proxynr[name]}-${platform}"
-proxynr["namespace"]="newrelic"
-proxynr["replicas"]=1
-proxynr["port"]=8080
-
 # persistencenr
 declare -A persistencenr
 persistencenr["name"]="persistencenr"
@@ -85,11 +84,42 @@ persistencenr["namespace"]="newrelic"
 persistencenr["replicas"]=1
 persistencenr["port"]=8080
 
+# proxynr
+declare -A proxynr
+proxynr["name"]="proxynr"
+proxynr["imageName"]="${repoName}:${proxynr[name]}-${platform}"
+proxynr["namespace"]="newrelic"
+proxynr["replicas"]=1
+proxynr["port"]=8080
+
+# persistenceotel
+declare -A persistenceotel
+persistenceotel["name"]="persistenceotel"
+persistenceotel["imageName"]="${repoName}:${persistenceotel[name]}-${platform}"
+persistenceotel["namespace"]="otel"
+persistenceotel["replicas"]=1
+persistenceotel["port"]=8080
+
+# proxyotel
+declare -A proxyotel
+proxyotel["name"]="proxyotel"
+proxyotel["imageName"]="${repoName}:${proxyotel[name]}-${platform}"
+proxyotel["namespace"]="otel"
+proxyotel["replicas"]=1
+proxyotel["port"]=8080
+
 ####################
 ### Build & Push ###
 ####################
 
 if [[ $build == "true" ]]; then
+  # persistencenr
+  docker build \
+    --platform "linux/${platform}" \
+    --tag "${DOCKERHUB_NAME}/${persistencenr[imageName]}" \
+    "../../apps/persistencenr/."
+  docker push "${DOCKERHUB_NAME}/${persistencenr[imageName]}"
+
   # proxynr
   docker build \
     --platform "linux/${platform}" \
@@ -97,12 +127,19 @@ if [[ $build == "true" ]]; then
     "../../apps/proxynr/."
   docker push "${DOCKERHUB_NAME}/${proxynr[imageName]}"
 
-  # persistencenr
+  # persistenceotel
   docker build \
     --platform "linux/${platform}" \
-    --tag "${DOCKERHUB_NAME}/${persistencenr[imageName]}" \
-    "../../apps/persistencenr/."
-  docker push "${DOCKERHUB_NAME}/${persistencenr[imageName]}"
+    --tag "${DOCKERHUB_NAME}/${persistenceotel[imageName]}" \
+    "../../apps/persistenceotel/."
+  docker push "${DOCKERHUB_NAME}/${persistenceotel[imageName]}"
+
+  # proxyotel
+  docker build \
+    --platform "linux/${platform}" \
+    --tag "${DOCKERHUB_NAME}/${proxyotel[imageName]}" \
+    "../../apps/proxyotel/."
+  docker push "${DOCKERHUB_NAME}/${proxyotel[imageName]}"
 fi
 
 ###################
@@ -153,6 +190,20 @@ helm upgrade ${prometheus[name]} \
   --set server.remoteWrite[0].bearer_token=$NEWRELIC_LICENSE_KEY \
   "prometheus-community/prometheus"
 
+# otelcollector
+helm upgrade ${otelcollector[name]} \
+  --install \
+  --wait \
+  --debug \
+  --create-namespace \
+  --namespace ${otelcollector[namespace]} \
+  --set name=${otelcollector[name]} \
+  --set mode=${otelcollector[mode]} \
+  --set prometheus.port=${otelcollector[prometheusPort]} \
+  --set newrelicOtlpEndpoint="otlp.eu01.nr-data.net:4317" \
+  --set newrelicLicenseKey=$NEWRELIC_LICENSE_KEY \
+  "../helm/otelcollector"
+
 # kafka
 helm upgrade ${kafka[name]} \
   --install \
@@ -172,26 +223,6 @@ helm upgrade ${mysql[name]} \
   --set auth.rootPassword=${mysql[password]} \
   --set auth.database=${mysql[database]} \
     "bitnami/mysql"
-
-# proxynr
-helm upgrade ${proxynr[name]} \
-  --install \
-  --wait \
-  --debug \
-  --create-namespace \
-  --namespace=${proxynr[namespace]} \
-  --set dockerhubName=$DOCKERHUB_NAME \
-  --set imageName=${proxynr[imageName]} \
-  --set imagePullPolicy="Always" \
-  --set name=${proxynr[name]} \
-  --set replicas=${proxynr[replicas]} \
-  --set port=${proxynr[port]} \
-  --set kafka.address="${kafka[name]}-0.${kafka[name]}-headless.${kafka[namespace]}.svc.cluster.local:9092" \
-  --set kafka.topic=${kafka[topicnr]} \
-  --set newrelic.appName=${proxynr[name]} \
-  --set newrelic.licenseKey=$NEWRELIC_LICENSE_KEY \
-  --set endpoints.persistence="http://${persistencenr[name]}.${persistencenr[namespace]}.svc.cluster.local:${persistencenr[port]}/persistence" \
-  "../helm/proxynr"
 
 # persistencenr
 helm upgrade ${persistencenr[name]} \
@@ -217,3 +248,66 @@ helm upgrade ${persistencenr[name]} \
   --set mysql.port=${mysql[port]} \
   --set mysql.database=${mysql[database]} \
   "../helm/persistencenr"
+
+# proxynr
+helm upgrade ${proxynr[name]} \
+  --install \
+  --wait \
+  --debug \
+  --create-namespace \
+  --namespace=${proxynr[namespace]} \
+  --set dockerhubName=$DOCKERHUB_NAME \
+  --set imageName=${proxynr[imageName]} \
+  --set imagePullPolicy="Always" \
+  --set name=${proxynr[name]} \
+  --set replicas=${proxynr[replicas]} \
+  --set port=${proxynr[port]} \
+  --set kafka.address="${kafka[name]}-0.${kafka[name]}-headless.${kafka[namespace]}.svc.cluster.local:9092" \
+  --set kafka.topic=${kafka[topicnr]} \
+  --set newrelic.appName=${proxynr[name]} \
+  --set newrelic.licenseKey=$NEWRELIC_LICENSE_KEY \
+  --set endpoints.persistence="http://${persistencenr[name]}.${persistencenr[namespace]}.svc.cluster.local:${persistencenr[port]}/persistence" \
+  "../helm/proxynr"
+
+# persistenceotel
+helm upgrade ${persistenceotel[name]} \
+  --install \
+  --wait \
+  --debug \
+  --create-namespace \
+  --namespace=${persistenceotel[namespace]} \
+  --set dockerhubName=$DOCKERHUB_NAME \
+  --set imageName=${persistenceotel[imageName]} \
+  --set imagePullPolicy="Always" \
+  --set name=${persistenceotel[name]} \
+  --set replicas=${persistenceotel[replicas]} \
+  --set port=${persistenceotel[port]} \
+  --set kafka.address="${kafka[name]}.${kafka[namespace]}.svc.cluster.local:9092" \
+  --set kafka.topic=${kafka[topicotel]} \
+  --set kafka.groupId=${persistenceotel[name]} \
+  --set endpoints.otelcollector="http://${otelcollector[name]}-collector.${otelcollector[namespace]}.svc.cluster.local:4317" \
+  --set mysql.server="${mysql[name]}.${mysql[namespace]}.svc.cluster.local" \
+  --set mysql.username=${mysql[username]} \
+  --set mysql.password=${mysql[password]} \
+  --set mysql.port=${mysql[port]} \
+  --set mysql.database=${mysql[database]} \
+  "../helm/persistenceotel"
+
+# proxyotel
+helm upgrade ${proxyotel[name]} \
+  --install \
+  --wait \
+  --debug \
+  --create-namespace \
+  --namespace=${proxyotel[namespace]} \
+  --set dockerhubName=$DOCKERHUB_NAME \
+  --set imageName=${proxyotel[imageName]} \
+  --set imagePullPolicy="Always" \
+  --set name=${proxyotel[name]} \
+  --set replicas=${proxyotel[replicas]} \
+  --set port=${proxyotel[port]} \
+  --set kafka.address="${kafka[name]}-0.${kafka[name]}-headless.${kafka[namespace]}.svc.cluster.local:9092" \
+  --set kafka.topic=${kafka[topicotel]} \
+  --set endpoints.otelcollector="http://${otelcollector[name]}-collector.${otelcollector[namespace]}.svc.cluster.local:4317" \
+  --set endpoints.persistence="http://${persistenceotel[name]}.${persistenceotel[namespace]}.svc.cluster.local:${persistenceotel[port]}/persistence" \
+  "../helm/proxyotel"

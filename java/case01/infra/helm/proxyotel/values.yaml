@@ -1,0 +1,39 @@
+### Variables
+
+# Name
+name: proxyotel
+
+# Port
+port: 8080
+
+# Replicas
+replicas: 1
+
+# Resources
+resources:
+  # Requests
+  requests:
+    # CPU
+    cpu: 100m
+    # Memory
+    memory: 100Mi
+  # Limits
+  limits:
+    # CPU
+    cpu: 800m
+    # Memory
+    memory: 1000Mi
+
+# Kafka
+kafka:
+  # Address
+  address: "kafka-0.kafka-headless.common.svc.cluster.local:9092"
+  # Topic
+  topic: "otel"
+
+# Endpoints
+endpoints:
+  # OTel collector
+  otelcollector: "http://otel-collector-collector.monitoring.svc.cluster.local:4317"
+  # Persistence service
+  persistence: "http://persistenceotel.otel.svc.cluster.local:8080/persistence"
