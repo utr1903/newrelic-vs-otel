@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+        - name: {{ .Values.name }}
+          image: "{{ .Values.dockerhubName }}/{{ .Values.imageName }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          env:
+            - name: ENDPOINT_NEWRELIC
+              value: {{ .Values.endpoints.newrelic }}
+            - name: ENDPOINT_OTEL
+              value: {{ .Values.endpoints.otel }}
+            - name: SIMULATION_INTERVAL
+              value: "{{ .Values.simulation.interval }}"
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}

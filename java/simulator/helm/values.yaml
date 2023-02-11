@@ -1,0 +1,35 @@
+### Variables
+
+# Name
+name: simulator
+
+# Replicas
+replicas: 1
+
+# Resources
+resources:
+  # Requests
+  requests:
+    # CPU
+    cpu: 100m
+    # Memory
+    memory: 100Mi
+  # Limits
+  limits:
+    # CPU
+    cpu: 800m
+    # Memory
+    memory: 1000Mi
+
+# Endpoints
+endpoints:
+  # New Relic proxy service
+  newrelic: "http://proxynr.newrelic.svc.cluster.local:8080/proxy"
+  # OTel proxy service
+  otel: "http://proxyotel.otel.svc.cluster.local:8080/proxy"
+
+# Simulation
+simulation:
+  # Minimal interval in milliseconds between adjacent calls
+  # of same sort (POST, GET, DELETE)
+  interval: "500"
