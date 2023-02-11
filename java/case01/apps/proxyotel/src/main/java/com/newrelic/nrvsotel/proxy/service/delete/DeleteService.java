@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.proxy.service.delete;
+package com.newrelic.nrvsotel.proxy.service.delete;
 
 import java.util.Collections;
 
@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.newrelic.futurestack.istanbul.proxy.dtos.ResponseBase;
+import com.newrelic.nrvsotel.proxy.dtos.ResponseBase;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 

@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.proxy.service.list.dtos;
+package com.newrelic.nrvsotel.proxy.service.list.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

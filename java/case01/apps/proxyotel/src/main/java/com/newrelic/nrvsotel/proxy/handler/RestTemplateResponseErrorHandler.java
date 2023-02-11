@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.proxy.handler;
+package com.newrelic.nrvsotel.proxy.handler;
 
 import java.io.IOException;
 

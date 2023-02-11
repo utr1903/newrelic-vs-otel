@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.proxy.controller;
+package com.newrelic.nrvsotel.proxy.controller;
 
 import java.util.List;
 
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.newrelic.futurestack.istanbul.proxy.dtos.ResponseBase;
-import com.newrelic.futurestack.istanbul.proxy.service.create.CreateService;
-import com.newrelic.futurestack.istanbul.proxy.service.create.dtos.CreateRequestDto;
-import com.newrelic.futurestack.istanbul.proxy.service.delete.DeleteService;
-import com.newrelic.futurestack.istanbul.proxy.service.list.ListService;
-import com.newrelic.futurestack.istanbul.proxy.service.list.dtos.PipelineData;
+import com.newrelic.nrvsotel.proxy.dtos.ResponseBase;
+import com.newrelic.nrvsotel.proxy.service.create.CreateService;
+import com.newrelic.nrvsotel.proxy.service.create.dtos.CreateRequestDto;
+import com.newrelic.nrvsotel.proxy.service.delete.DeleteService;
+import com.newrelic.nrvsotel.proxy.service.list.ListService;
+import com.newrelic.nrvsotel.proxy.service.list.dtos.PipelineData;
 
 @RestController
 @RequestMapping("proxy")

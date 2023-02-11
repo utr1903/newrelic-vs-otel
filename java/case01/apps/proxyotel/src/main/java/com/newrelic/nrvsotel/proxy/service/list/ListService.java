@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.proxy.service.list;
+package com.newrelic.nrvsotel.proxy.service.list;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.newrelic.futurestack.istanbul.proxy.dtos.ResponseBase;
-import com.newrelic.futurestack.istanbul.proxy.service.list.dtos.PipelineData;
+import com.newrelic.nrvsotel.proxy.dtos.ResponseBase;
+import com.newrelic.nrvsotel.proxy.service.list.dtos.PipelineData;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 
