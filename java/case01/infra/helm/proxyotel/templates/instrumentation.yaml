@@ -13,4 +13,4 @@ spec:
   sampler:
     type: always_on
   java:
-        
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:latest
