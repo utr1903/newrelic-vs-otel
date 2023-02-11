@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.persistence;
+package com.newrelic.nrvsotel.persistence;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

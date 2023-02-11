@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.persistence.entity;
+package com.newrelic.nrvsotel.persistence.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

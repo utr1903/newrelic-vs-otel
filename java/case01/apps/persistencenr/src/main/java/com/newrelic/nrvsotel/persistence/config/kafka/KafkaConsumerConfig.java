@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.persistence.config.kafka;
+package com.newrelic.nrvsotel.persistence.config.kafka;
 
 import java.util.HashMap;
 import java.util.Map;
