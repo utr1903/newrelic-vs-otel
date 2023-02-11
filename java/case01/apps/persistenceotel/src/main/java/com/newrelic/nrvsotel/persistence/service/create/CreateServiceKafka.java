@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.persistence.service.create;
+package com.newrelic.nrvsotel.persistence.service.create;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,9 +7,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.newrelic.futurestack.istanbul.persistence.entity.PipelineData;
-import com.newrelic.futurestack.istanbul.persistence.repository.PipelineDataRepository;
-import com.newrelic.futurestack.istanbul.persistence.service.create.dtos.CreateRequestDto;
+import com.newrelic.nrvsotel.persistence.entity.PipelineData;
+import com.newrelic.nrvsotel.persistence.repository.PipelineDataRepository;
+import com.newrelic.nrvsotel.persistence.service.create.dtos.CreateRequestDto;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 

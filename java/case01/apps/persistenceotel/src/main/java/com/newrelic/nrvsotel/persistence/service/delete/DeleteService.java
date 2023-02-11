@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.persistence.service.delete;
+package com.newrelic.nrvsotel.persistence.service.delete;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.newrelic.futurestack.istanbul.persistence.dtos.ResponseBase;
-import com.newrelic.futurestack.istanbul.persistence.repository.PipelineDataRepository;
-import com.newrelic.futurestack.istanbul.persistence.service.error.ErrorService;
+import com.newrelic.nrvsotel.persistence.dtos.ResponseBase;
+import com.newrelic.nrvsotel.persistence.repository.PipelineDataRepository;
+import com.newrelic.nrvsotel.persistence.service.error.ErrorService;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 

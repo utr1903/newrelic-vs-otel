@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.persistence.dtos;
+package com.newrelic.nrvsotel.persistence.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

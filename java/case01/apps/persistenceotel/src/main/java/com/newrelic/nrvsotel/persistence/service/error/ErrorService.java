@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.persistence.service.error;
+package com.newrelic.nrvsotel.persistence.service.error;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

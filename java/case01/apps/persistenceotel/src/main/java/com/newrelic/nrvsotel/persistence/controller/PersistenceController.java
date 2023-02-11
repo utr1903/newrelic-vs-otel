@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.persistence.controller;
+package com.newrelic.nrvsotel.persistence.controller;
 
 import java.util.List;
 
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.newrelic.futurestack.istanbul.persistence.dtos.ResponseBase;
-import com.newrelic.futurestack.istanbul.persistence.entity.PipelineData;
-import com.newrelic.futurestack.istanbul.persistence.service.create.CreateService;
-import com.newrelic.futurestack.istanbul.persistence.service.create.dtos.CreateRequestDto;
-import com.newrelic.futurestack.istanbul.persistence.service.delete.DeleteService;
-import com.newrelic.futurestack.istanbul.persistence.service.list.ListService;
+import com.newrelic.nrvsotel.persistence.dtos.ResponseBase;
+import com.newrelic.nrvsotel.persistence.entity.PipelineData;
+import com.newrelic.nrvsotel.persistence.service.create.CreateService;
+import com.newrelic.nrvsotel.persistence.service.create.dtos.CreateRequestDto;
+import com.newrelic.nrvsotel.persistence.service.delete.DeleteService;
+import com.newrelic.nrvsotel.persistence.service.list.ListService;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 
