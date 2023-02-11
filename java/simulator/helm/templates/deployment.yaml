@@ -23,7 +23,7 @@ spec:
             - name: ENDPOINT_OTEL
               value: {{ .Values.endpoints.otel }}
             - name: SIMULATION_INTERVAL
-              value: {{ .Values.simulation.interval }}
+              value: "{{ .Values.simulation.interval }}"
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}

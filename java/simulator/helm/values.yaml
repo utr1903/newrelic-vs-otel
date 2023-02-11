@@ -32,4 +32,4 @@ endpoints:
 simulation:
   # Minimal interval in milliseconds between adjacent calls
   # of same sort (POST, GET, DELETE)
-  interval: 500 
+  interval: "500"
