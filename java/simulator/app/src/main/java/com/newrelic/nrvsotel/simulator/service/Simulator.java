@@ -66,7 +66,7 @@ public class Simulator implements CommandLineRunner {
   private void create(
       boolean isOtel) {
 
-    var url = setEndpointUrl(isOtel) + "/delete";
+    var url = setEndpointUrl(isOtel) + "/create";
     var dto = "{\"name\":\"name\",\"value\":\"value\"}";
 
     var headers = new HttpHeaders();
@@ -82,7 +82,7 @@ public class Simulator implements CommandLineRunner {
   private void list(
       boolean isOtel) {
 
-    var url = setEndpointUrl(isOtel) + "/delete";
+    var url = setEndpointUrl(isOtel) + "/list";
 
     var headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
