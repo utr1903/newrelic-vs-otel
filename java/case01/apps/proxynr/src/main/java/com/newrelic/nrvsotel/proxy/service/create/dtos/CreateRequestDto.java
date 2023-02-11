@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.proxy.dtos;
+package com.newrelic.nrvsotel.proxy.service.create.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseBase<T> {
+public class CreateRequestDto {
 
-  private String message;
+  private String name;
 
-  private T data;
+  private String value;
 }

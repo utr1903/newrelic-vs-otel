@@ -1,6 +1,7 @@
-package com.newrelic.futurestack.istanbul.proxy.service.delete;
+package com.newrelic.nrvsotel.proxy.service.list;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,20 +16,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.newrelic.futurestack.istanbul.proxy.dtos.ResponseBase;
+import com.newrelic.nrvsotel.proxy.dtos.ResponseBase;
+import com.newrelic.nrvsotel.proxy.service.list.dtos.PipelineData;
 
 @Service
-public class DeleteService {
+public class ListService {
 
-  private final Logger logger = LoggerFactory.getLogger(DeleteService.class);
+  private final Logger logger = LoggerFactory.getLogger(ListService.class);
 
   @Value(value = "${PERSISTENCE_SERVICE_ENDPOINT}")
   private String persistenceServiceEndpoint;
-
+  
   @Autowired
   private RestTemplate restTemplate;
 
-  public ResponseEntity<ResponseBase<Boolean>> run(String error) {
+  public ResponseEntity<ResponseBase<List<PipelineData>>> run(String error) {
     logger.info("Making request to persistence service...");
 
     var response = makeRequestToPersistenceService(error);
@@ -37,10 +39,10 @@ public class DeleteService {
     return response;
   }
 
-  private ResponseEntity<ResponseBase<Boolean>> makeRequestToPersistenceService(
+  private ResponseEntity<ResponseBase<List<PipelineData>>> makeRequestToPersistenceService(
       String error) {
 
-    var url = persistenceServiceEndpoint + "/delete";
+    var url = persistenceServiceEndpoint + "/list";
     if (!error.isEmpty())
       url += "?error=" + error;
 
@@ -49,8 +51,8 @@ public class DeleteService {
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
     var entity = new HttpEntity<>(null, headers);
-    return restTemplate.exchange(url, HttpMethod.DELETE, entity,
-        new ParameterizedTypeReference<ResponseBase<Boolean>>() {
+    return restTemplate.exchange(url, HttpMethod.GET, entity,
+        new ParameterizedTypeReference<ResponseBase<List<PipelineData>>>() {
         });
   }
 }

@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.proxy.service.create;
+package com.newrelic.nrvsotel.proxy.service.create;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.newrelic.api.agent.Trace;
-import com.newrelic.futurestack.istanbul.proxy.dtos.ResponseBase;
-import com.newrelic.futurestack.istanbul.proxy.service.create.dtos.CreateRequestDto;
+import com.newrelic.nrvsotel.proxy.dtos.ResponseBase;
+import com.newrelic.nrvsotel.proxy.service.create.dtos.CreateRequestDto;
 
 @Service
 public class CreateService {

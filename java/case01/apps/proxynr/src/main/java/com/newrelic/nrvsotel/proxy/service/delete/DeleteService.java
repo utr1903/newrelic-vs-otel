@@ -1,7 +1,6 @@
-package com.newrelic.futurestack.istanbul.proxy.service.list;
+package com.newrelic.nrvsotel.proxy.service.delete;
 
 import java.util.Collections;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,21 +15,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.newrelic.futurestack.istanbul.proxy.dtos.ResponseBase;
-import com.newrelic.futurestack.istanbul.proxy.service.list.dtos.PipelineData;
+import com.newrelic.nrvsotel.proxy.dtos.ResponseBase;
 
 @Service
-public class ListService {
+public class DeleteService {
 
-  private final Logger logger = LoggerFactory.getLogger(ListService.class);
+  private final Logger logger = LoggerFactory.getLogger(DeleteService.class);
 
   @Value(value = "${PERSISTENCE_SERVICE_ENDPOINT}")
   private String persistenceServiceEndpoint;
-  
+
   @Autowired
   private RestTemplate restTemplate;
 
-  public ResponseEntity<ResponseBase<List<PipelineData>>> run(String error) {
+  public ResponseEntity<ResponseBase<Boolean>> run(String error) {
     logger.info("Making request to persistence service...");
 
     var response = makeRequestToPersistenceService(error);
@@ -39,10 +37,10 @@ public class ListService {
     return response;
   }
 
-  private ResponseEntity<ResponseBase<List<PipelineData>>> makeRequestToPersistenceService(
+  private ResponseEntity<ResponseBase<Boolean>> makeRequestToPersistenceService(
       String error) {
 
-    var url = persistenceServiceEndpoint + "/list";
+    var url = persistenceServiceEndpoint + "/delete";
     if (!error.isEmpty())
       url += "?error=" + error;
 
@@ -51,8 +49,8 @@ public class ListService {
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
     var entity = new HttpEntity<>(null, headers);
-    return restTemplate.exchange(url, HttpMethod.GET, entity,
-        new ParameterizedTypeReference<ResponseBase<List<PipelineData>>>() {
+    return restTemplate.exchange(url, HttpMethod.DELETE, entity,
+        new ParameterizedTypeReference<ResponseBase<Boolean>>() {
         });
   }
 }

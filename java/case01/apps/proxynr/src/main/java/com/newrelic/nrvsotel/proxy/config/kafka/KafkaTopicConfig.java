@@ -1,4 +1,4 @@
-package com.newrelic.futurestack.istanbul.proxy.config.kafka;
+package com.newrelic.nrvsotel.proxy.config.kafka;
 
 import java.util.HashMap;
 import java.util.Map;
