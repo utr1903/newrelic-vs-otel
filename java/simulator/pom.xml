@@ -12,7 +12,7 @@
 	<artifactId>simulator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>simulator</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Simulator app for New Relic vs OTel</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
